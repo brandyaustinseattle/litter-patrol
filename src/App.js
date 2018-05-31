@@ -11,6 +11,7 @@ class App extends Component {
     };
 
     this.startGame();
+    // console.log note
     console.log(this.state.bins);
   }
 
@@ -25,20 +26,46 @@ class App extends Component {
   getBinsState() {
     let bins = [];
     for (let i = 0; i < 9; i++){
-      bins.push({ isTrashVisible: (Math.round(Math.random()) ? true : false )});
+      bins.push({ index: i, isTrashVisible: (Math.round(Math.random()) ? true : false )});
     }
-
     return bins;
   }
 
-  onTrashClicked = () => {
-    // Fill this in!
+  incrementPoints = () => {
+    // console.log note
+    console.log('incrementing points');
+    let points = this.state.points;
+    this.setState({points: points += 1});
+  }
+
+  emptyTrash = (index) => {
+    // console.log note
+    console.log('emptying trash');
+
+    let bins = this.state.bins;
+
+    // console.log note
+    console.log('bins before update');
+    console.log(bins);
+
+    let updatedBins = bins.map(function(bin) {
+      if (bin.index === index) {
+        bin.isTrashVisible = false;
+      }
+        return bin
+      });
+
+      // console.log note
+      console.log('bins after update');
+      console.log(updatedBins);
+
+      this.setState({bins: updatedBins});
   }
 
   render() {
     const bins = this.state.bins.map((bin, index) => {
       return (
-        <Trash key={`trash-${index}`} />
+        <Trash key={`trash-${index}`} index={index} isTrashVisible={bin.isTrashVisible} incrementPoints={this.incrementPoints} emptyTrash={this.emptyTrash} />
       );
     });
 
